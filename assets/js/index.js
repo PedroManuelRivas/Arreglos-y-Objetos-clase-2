@@ -151,42 +151,113 @@ var consultaTraumatologia = [
         prevision: "ISAPRE"
     }
 ]
+//Declarando nuevo arreglo de pacientes en el área traumatología
+var nuevaConsultaTraumatologia = [
+    {
+        hora: "09:00:00",
+        especialista: "RENÉ POBLETE",
+        paciente: "ANA GELLONA",
+        rut: "13123329-7",
+        prevision: "ISAPRE"
+    },
+    {
+        hora: "09:30:00",
+        especialista: "MARIA SOLAR",
+        paciente: "RAMIRO ANDRADE",
+        rut: "12221451-K",
+        prevision: "FONASA"
+    },
+    {
+        hora: "10:00:00",
+        especialista: "RAUL LOYOLA",
+        paciente: "CARMEN ISLA",
+        rut: "10112348-3",
+        prevision: "ISAPRE"
+    },
+    {
+        hora: "10:30:00",
+        especialista: "ANTONIO LARENAS",
+        paciente: "PABLO LOAYZA",
+        rut: "13453234-1 I",
+        prevision: "ISAPRE"
+    },
+    {
+        hora: "12:00:00",
+        especialista: "MATIAS ARAVENA",
+        paciente: "SUSANA POBLETE",
+        rut: "14345656-6",
+        prevision: "FONASA"
+    },
+]
+var nuevasHoras = consultaTraumatologia.concat(nuevaConsultaTraumatologia)
 
-//Variable para ordenar por consulta
-var consultasOrd = consultaDental.sort((a, b) => a.date - b.date);
-
+var todos = [consultaTraumatologia, nuevasHoras]
 //Creando función para generar tabla en HTML
-function imprimirRegistros() {
-    for (consulta of consultasOrd) {
-        $("#tablaConsulta").append(
-            `
-              <tr>
-                  <td>${consulta.hora}</td>
-                  <td>${consulta.especialista}</td>
-                  <td>${consulta.paciente}</td>
-                  <td>${consulta.rut}</td>
-                  <td>${consulta.prevision}</td>
-              </tr>
-         `
-        );
-    }
-}
-//Activando la función
-imprimirRegistros()
-
-//Creando función que imprime primera y ultima consulta
-var longitud = consultasOrd.length
-
-$(document).ready(function () {
-    $("button").click(function () {
-        $("div p:nth-child(1)").html("Primera atención: " + consultasOrd[0].paciente + " - " + consultasOrd[0].prevision);
-        $("div p:nth-child(2)").html("Último atención: " + consultasOrd[longitud - 1].paciente + " - " + consultasOrd[longitud - 1].prevision);
+function imprimirTabla(datos) {
+    console.log(datos);
+    $("tbody").html("");
+    datos.forEach((c) => {
+        $("tbody").append(`
+          <tr>
+          <td>${c.hora}</td>
+          <td>${c.especialista}</td>
+          <td>${c.paciente}</td>
+          <td>${c.rut}</td>
+          <td>${c.prevision}</td>
+          </tr>
+          `);
     });
-});
+}
 
+//Creación de botones para imprimir nuevas citas
+let botones = document.getElementsByTagName("button")
+let arregloBotones = [];
+for (let i = 0; i < botones.length; i++) {
+    arregloBotones.push(botones[i]);
+}
+arregloBotones.forEach((b, i) => {
+    b.addEventListener("click", function () {
+        imprimirTabla(todos[i])
+    }
+    )
+})
 
+//Creación de botones para eliminar primer registro de tabla
+let eliminarPrimerRegistro = document.getElementsByClassName("eliminarPrimero")[0]
+eliminarPrimerRegistro.addEventListener("click", function () {
+    let eliminados = nuevasHoras
+    eliminados.shift()
+    console.log(eliminados)
+    imprimirTabla(eliminados)
+})
 
+//Creación de boton para eliminar ultimo registro de la tabla.
+let eliminarUltimoRegistro = document.getElementsByClassName("eliminarUltimo")[0]
+eliminarUltimoRegistro.addEventListener("click", function () {
+    let eliminados = nuevasHoras
+    eliminados.pop()
+    console.log(eliminados)
+    imprimirTabla(eliminados)
+})
 
+//Creando funcion para imprimir citas de dental separado por guiones.
 
+/*function imprimirDental(datos) {
+    console.log(datos);
+    $("div").html("");
+    datos.forEach((c) => {
+        $("div").append(`
+          <p>${c.hora}</p>
+          <p>${c.especialista}</p>
+          <p>${c.paciente}</p>
+          <p>${c.rut}</p>
+          <p>${c.prevision}</p>
+          `);
+    });
+}
 
-
+//Creación de boton para mostrar citas en dental
+let printDental = document.getElementsByClassName("mostrarDental")[1]
+printDental.addEventListener("click", function () {
+    console.log(consultaDental)
+})*/

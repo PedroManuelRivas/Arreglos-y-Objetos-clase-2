@@ -210,22 +210,22 @@ function imprimirTabla(datos) {
 }
 
 //Creación de botones para imprimir nuevas citas
-let botones = document.getElementsByTagName("button")
-let arregloBotones = [];
-for (let i = 0; i < botones.length; i++) {
-    arregloBotones.push(botones[i]);
-}
-arregloBotones.forEach((b, i) => {
-    b.addEventListener("click", function () {
-        imprimirTabla(todos[i])
-    }
-    )
+$(document).ready(function () {
+    //each (primer parámetro es el indice y el segundo es el elemento)
+    $("button:not([class])").each((i, b) => {
+        console.log(b)
+        b.addEventListener("click", function () {
+            console.log("tabla")
+            imprimirTabla(todos[i])
+        }
+        )
+    })
 })
 
 //Creación de botones para eliminar primer registro de tabla
 let eliminarPrimerRegistro = document.getElementsByClassName("eliminarPrimero")[0]
 eliminarPrimerRegistro.addEventListener("click", function () {
-    let eliminados = nuevasHoras
+    var eliminados = nuevasHoras
     eliminados.shift()
     console.log(eliminados)
     imprimirTabla(eliminados)
@@ -242,22 +242,18 @@ eliminarUltimoRegistro.addEventListener("click", function () {
 
 //Creando funcion para imprimir citas de dental separado por guiones.
 
-/*function imprimirDental(datos) {
-    console.log(datos);
-    $("div").html("");
-    datos.forEach((c) => {
+function imprimirDental(arregloDeObjetos) {
+    console.log(arregloDeObjetos);
+    $("div").html("").append("<h1>Consultas Dental</h1>");
+    arregloDeObjetos.forEach((objetoDelArray) => {
         $("div").append(`
-          <p>${c.hora}</p>
-          <p>${c.especialista}</p>
-          <p>${c.paciente}</p>
-          <p>${c.rut}</p>
-          <p>${c.prevision}</p>
-          `);
+          <p>${Object.values(objetoDelArray).join("-")}</p>
+        `);
     });
 }
 
 //Creación de boton para mostrar citas en dental
-let printDental = document.getElementsByClassName("mostrarDental")[1]
+let printDental = document.getElementsByClassName("mostrarDental")[0]
 printDental.addEventListener("click", function () {
-    console.log(consultaDental)
-})*/
+    imprimirDental(consultaDental)
+})
